@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
     const resendKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.FEEDBACK_TO_EMAIL;
     const fromEmail = process.env.FEEDBACK_FROM_EMAIL;
+    let emailSent = false;
 
     if (resendKey && toEmail && fromEmail) {
       const resend = new Resend(resendKey);
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest) {
       const safeComment = typeof comment === 'string' ? comment.trim() : '';
       const safeSuggestion = typeof menuSuggestion === 'string' ? menuSuggestion.trim() : '';
 
-      await resend.emails.send({
+      const result = await resend.emails.send({
         from: fromEmail,
         to: toEmail,
         subject: `New customer feedback (${sessionId})`,
@@ -43,12 +44,18 @@ export async function POST(req: NextRequest) {
           <p><em>Sent at: ${new Date().toISOString()}</em></p>
         `,
       });
+
+      if (result.error) {
+        console.error('[/api/review] Resend error', result.error);
+      } else {
+        emailSent = true;
+      }
     } else {
       console.warn('[/api/review] Email not sent: missing RESEND_API_KEY, FEEDBACK_TO_EMAIL, or FEEDBACK_FROM_EMAIL');
     }
     // --- END AI-GENERATED CODE ---
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, emailSent });
   } catch (err) {
     console.error('[/api/review]', err);
     return NextResponse.json({ error: 'Failed to save review' }, { status: 500 });
