@@ -15,6 +15,7 @@ export default function ResultsPage() {
   const [menuSuggestion, setMenuSuggestion] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const raw = sessionStorage.getItem('taste_session');
@@ -25,19 +26,35 @@ export default function ResultsPage() {
   async function handleSubmit() {
     if (!session) return;
     setSubmitting(true);
-    await fetch('/api/review', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sessionId: session.sessionId,
-        rating,
-        comment,
-        menuSuggestion,
-      }),
-    });
+    setError('');
+    try {
+      const res = await fetch('/api/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: session.sessionId,
+          rating,
+          comment,
+          menuSuggestion,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to submit feedback');
+      }
+
+      sessionStorage.removeItem('taste_session');
+      setDone(true);
+    } catch {
+      setError('Could not submit feedback right now. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  function handleSkip() {
     sessionStorage.removeItem('taste_session');
     setDone(true);
-    setSubmitting(false);
   }
 
   if (!session) {
@@ -121,12 +138,26 @@ export default function ResultsPage() {
           className="w-full rounded-xl border border-stone-200 p-3 text-sm text-stone-700 placeholder:text-stone-300 resize-none focus:outline-none focus:border-amber-400 bg-stone-50"
         />
 
+        {error && (
+          <p className="text-red-500 text-sm bg-red-50 border border-red-100 rounded-xl p-3">
+            {error}
+          </p>
+        )}
+
         <button
           onClick={handleSubmit}
           disabled={submitting}
           className="w-full rounded-2xl bg-amber-500 py-4 text-center font-semibold text-white shadow active:bg-amber-600 disabled:opacity-50 transition-colors text-base"
         >
-          {submitting ? 'Saving…' : rating ? 'Submit & enjoy! 🎉' : 'Skip & enjoy! →'}
+          {submitting ? 'Sending feedback…' : 'Submit feedback & enjoy! 🎉'}
+        </button>
+
+        <button
+          onClick={handleSkip}
+          disabled={submitting}
+          className="w-full text-stone-500 underline text-sm disabled:opacity-50"
+        >
+          Skip feedback
         </button>
       </div>
     </main>
