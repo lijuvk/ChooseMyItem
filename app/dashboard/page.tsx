@@ -1,5 +1,7 @@
-import { db } from '@/lib/firebase-admin';
+import { getDb } from '@/lib/firebase-admin';
 import { Timestamp } from 'firebase-admin/firestore';
+
+export const dynamic = 'force-dynamic';
 
 type Session = {
   id: string;
@@ -12,7 +14,7 @@ type Session = {
 };
 
 async function getSessions(): Promise<Session[]> {
-  const snap = await db
+  const snap = await getDb()
     .collection('sessions')
     .orderBy('createdAt', 'desc')
     .limit(200)
