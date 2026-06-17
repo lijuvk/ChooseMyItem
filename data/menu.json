@@ -1,0 +1,100 @@
+{
+  "items": [
+    {
+      "id": "m1",
+      "name": "Tropical Mango Smoothie",
+      "category": "Smoothies",
+      "description": "Fresh mango blended with pineapple, coconut water, and a squeeze of lime",
+      "tags": ["fruity", "cold", "sweet", "light", "refreshing"],
+      "emoji": "🥭"
+    },
+    {
+      "id": "m2",
+      "name": "Dark Chocolate Frappe",
+      "category": "Cold Drinks",
+      "description": "Rich dark chocolate blended with ice cream, milk, and a shot of espresso",
+      "tags": ["creamy", "cold", "sweet", "bold", "rich"],
+      "emoji": "🍫"
+    },
+    {
+      "id": "m3",
+      "name": "Matcha Oat Latte",
+      "category": "Hot Drinks",
+      "description": "Premium ceremonial matcha whisked into silky steamed oat milk, lightly sweetened",
+      "tags": ["earthy", "hot", "lightly-sweet", "light", "creamy"],
+      "emoji": "🍵"
+    },
+    {
+      "id": "m4",
+      "name": "Classic Cappuccino",
+      "category": "Coffee",
+      "description": "Double espresso with velvety steamed milk foam — a timeless café classic",
+      "tags": ["classic", "hot", "not-sweet", "bold", "creamy"],
+      "emoji": "☕"
+    },
+    {
+      "id": "m5",
+      "name": "Strawberry Hibiscus Iced Tea",
+      "category": "Teas",
+      "description": "Hibiscus tea steeped with fresh strawberries, served over ice with a honey drizzle",
+      "tags": ["fruity", "cold", "lightly-sweet", "light", "refreshing"],
+      "emoji": "🍓"
+    },
+    {
+      "id": "m6",
+      "name": "Salted Caramel Cold Brew",
+      "category": "Cold Drinks",
+      "description": "18-hour cold brew coffee with housemade salted caramel syrup and oat cream",
+      "tags": ["classic", "cold", "sweet", "bold", "caramel"],
+      "emoji": "🧋"
+    },
+    {
+      "id": "m7",
+      "name": "Lavender Honey Latte",
+      "category": "Hot Drinks",
+      "description": "Espresso with floral lavender syrup, local honey, and steamed whole milk",
+      "tags": ["floral", "hot", "lightly-sweet", "light", "creamy"],
+      "emoji": "💜"
+    },
+    {
+      "id": "m8",
+      "name": "Avocado Banana Smoothie",
+      "category": "Smoothies",
+      "description": "Creamy avocado blended with banana, almond milk, and a touch of honey",
+      "tags": ["creamy", "cold", "lightly-sweet", "rich", "smooth"],
+      "emoji": "🥑"
+    },
+    {
+      "id": "m9",
+      "name": "Chamomile Ginger Tea",
+      "category": "Teas",
+      "description": "Calming dried chamomile with warming fresh ginger root and local honey",
+      "tags": ["herbal", "hot", "lightly-sweet", "light", "soothing"],
+      "emoji": "🌼"
+    },
+    {
+      "id": "m10",
+      "name": "Peanut Butter Protein Shake",
+      "category": "Smoothies",
+      "description": "Natural peanut butter, banana, whey protein, and oat milk — thick and filling",
+      "tags": ["creamy", "cold", "not-sweet", "rich", "bold"],
+      "emoji": "🥜"
+    },
+    {
+      "id": "m11",
+      "name": "Sparkling Yuzu Lemonade",
+      "category": "Cold Drinks",
+      "description": "Fresh-squeezed lemon with Japanese yuzu, a pinch of sea salt, and sparkling water",
+      "tags": ["fruity", "cold", "lightly-sweet", "light", "refreshing"],
+      "emoji": "🍋"
+    },
+    {
+      "id": "m12",
+      "name": "Spiced Chai Latte",
+      "category": "Hot Drinks",
+      "description": "Bold black tea with cinnamon, cardamom, cloves, ginger, and steamed milk",
+      "tags": ["spiced", "hot", "sweet", "bold", "warming"],
+      "emoji": "🫖"
+    }
+  ]
+}

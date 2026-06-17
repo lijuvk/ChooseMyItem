@@ -1,0 +1,69 @@
+import { NextRequest, NextResponse } from 'next/server';
+import Anthropic from '@anthropic-ai/sdk';
+import { db } from '@/lib/firebase-admin';
+import { getMenu } from '@/lib/menu';
+
+const anthropic = new Anthropic();
+
+export async function POST(req: NextRequest) {
+  try {
+    const { answers, tableId } = await req.json();
+    const menu = getMenu();
+
+    const menuText = menu
+      .map((item) => `• ${item.emoji} ${item.name} — ${item.description}`)
+      .join('\n');
+
+    const msg = await anthropic.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 512,
+      messages: [
+        {
+          role: 'user',
+          content: `You are a warm, friendly barista helping a customer pick the perfect drink.
+
+Customer taste profile:
+- Flavor: ${answers.flavor}
+- Temperature: ${answers.temperature}
+- Sweetness: ${answers.sweetness}
+- Intensity: ${answers.intensity}
+
+Our menu:
+${menuText}
+
+Suggest exactly 2 items that best match this customer. Write a short, personal reason for each (1–2 warm sentences).
+
+Reply with ONLY valid JSON — no markdown, no explanation:
+[{"name":"...","emoji":"...","reason":"..."},{"name":"...","emoji":"...","reason":"..."}]`,
+        },
+      ],
+    });
+
+    const raw = msg.content[0].type === 'text' ? msg.content[0].text.trim() : '[]';
+
+    let suggestions: Array<{ name: string; emoji: string; reason: string }>;
+    try {
+      suggestions = JSON.parse(raw);
+    } catch {
+      // Claude sometimes wraps in markdown fences — strip and retry
+      const stripped = raw.replace(/^```[^\n]*\n?/, '').replace(/\n?```$/, '').trim();
+      suggestions = JSON.parse(stripped);
+    }
+
+    const ref = db.collection('sessions').doc();
+    await ref.set({
+      tableId: tableId ?? null,
+      answers,
+      suggestions,
+      createdAt: new Date(),
+      rating: null,
+      comment: null,
+      reviewedAt: null,
+    });
+
+    return NextResponse.json({ sessionId: ref.id, suggestions });
+  } catch (err) {
+    console.error('[/api/suggest]', err);
+    return NextResponse.json({ error: 'Failed to get suggestions' }, { status: 500 });
+  }
+}
