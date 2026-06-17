@@ -12,6 +12,7 @@ export default function ResultsPage() {
   const [rating, setRating] = useState(0);
   const [hovered, setHovered] = useState(0);
   const [comment, setComment] = useState('');
+  const [menuSuggestion, setMenuSuggestion] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -27,7 +28,12 @@ export default function ResultsPage() {
     await fetch('/api/review', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId: session.sessionId, rating, comment }),
+      body: JSON.stringify({
+        sessionId: session.sessionId,
+        rating,
+        comment,
+        menuSuggestion,
+      }),
     });
     sessionStorage.removeItem('taste_session');
     setDone(true);
@@ -103,6 +109,14 @@ export default function ResultsPage() {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Any comments? (optional)"
+          rows={3}
+          className="w-full rounded-xl border border-stone-200 p-3 text-sm text-stone-700 placeholder:text-stone-300 resize-none focus:outline-none focus:border-amber-400 bg-stone-50"
+        />
+
+        <textarea
+          value={menuSuggestion}
+          onChange={(e) => setMenuSuggestion(e.target.value)}
+          placeholder="Any menu suggestion or improvement idea? (optional)"
           rows={3}
           className="w-full rounded-xl border border-stone-200 p-3 text-sm text-stone-700 placeholder:text-stone-300 resize-none focus:outline-none focus:border-amber-400 bg-stone-50"
         />
